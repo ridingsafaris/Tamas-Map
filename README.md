@@ -1,4 +1,4 @@
-#Riding Safaris Map Component
+# Riding Safaris Map Component
 
 ## Getting Started
 
