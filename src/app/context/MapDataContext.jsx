@@ -276,10 +276,16 @@ export const MapDataProvider = ({ children }) => {
     const fetchRides = async () => {
       let ridesData = await loadRidesFromSanity();
       const ratesData = await getRatesFromSanity();
-
+      
       ridesData = ridesData.filter((ride) => {
         return ride.black_saddle !== null && ride.black_saddle !== undefined && ride.category !== null && ride.category !== undefined;
       });
+
+      ridesData = ridesData.map(ride => {
+        return {...ride, ...{operator: "Operator name here"}}
+      });
+
+      console.log(ridesData);
 
       // Extract all distinct categories from the rides
       const categories = extractDistinctCategories(ridesData);

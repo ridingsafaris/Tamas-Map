@@ -142,9 +142,10 @@ const SearchBox = () => {
       }
 
       if (debouncedQuery.trim()) {
-        const filtered = ridesRef.current.filter((item) =>
-          item.name.toLowerCase().includes(debouncedQuery.toLowerCase())
-        );
+        const filtered = ridesRef.current.filter((item) => {
+          console.log(item);
+          return item.name.toLowerCase().includes(debouncedQuery.toLowerCase())
+        });
 
         // Get only the top 3
         const slicedData = filtered.slice(0, 3);

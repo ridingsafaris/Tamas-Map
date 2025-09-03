@@ -1,4 +1,4 @@
-"use-client";
+"use client";
 
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { motion, AnimatePresence } from "framer-motion";
