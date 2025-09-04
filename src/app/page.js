@@ -4,7 +4,7 @@ import Map from './components/Map/Map'
 
 const Home = () => {
   return (
-    <div className="w-screen h-[100dvh] overflow-y-hidden">
+    <div className="w-screen h-[100dvh] overflow-y-hidden overflow-x-hidden">
       <MapDataProvider>
         <FilterDataProvider>
           <Map></Map>
