@@ -50,7 +50,7 @@ const loadRidesFromSanity = async () => {
 
 const getRatesDataFromAPI = async () => {
   // Fetch exchange rates
-  const ratesRaw = await fetch('https://api.currencyfreaks.com/v2.0/rates/latest?apikey=d51a3f2df7de4467b05b5c874c2489b9&symbols=GBP,USD,EUR,AUD,NZD,CAD,ZAR,DKK,SEK,NOK,ISK,INR,RUB,PLN');
+  const ratesRaw = await fetch(`https://api.currencyfreaks.com/v2.0/rates/latest?apikey=${process.env.NEXT_PUBLIC_EXCHANGE_API_KEY}&symbols=${process.env.NEXT_PUBLIC_EXCHANGE_CURRENCIES}`);
   const rates = await ratesRaw.json();
       
   // Convert all rates to numbers
@@ -90,7 +90,10 @@ const getRatesFromSanity = async () => {
       let invertedRatesData = invertRates(ratesData);
 
 
-      // TODO - Store ratesData in Sanity for future use
+      // Delete all docs that are of type exchangeRate 
+      await client.delete({ query: '*[_type == "exchangeRate"]' });
+
+      // Store ratesData in Sanity for future use
       await saveRatesToSanity(invertedRatesData);
 
       // Return ratesData to caller
@@ -114,19 +117,33 @@ const getRatesFromSanity = async () => {
       // we have this because all prices are defaulted in USD
 
     let invertedRatesData = invertRates(ratesData);
+
+    // Delete all docs that are of type exchangeRate
+    await client.delete({ query: '*[_type == "exchangeRate"]' });
+
+    // Store ratesData in Sanity for future use
+    await saveRatesToSanity(invertedRatesData);
+
     return invertedRatesData;
   }
 }
 
 const saveRatesToSanity = async (rates) => {
-  const doc = {
-    _type: "exchangeRate",
-    created_at: new Date().toISOString(),
-    rates_json: JSON.stringify(rates)
-  };
+  console.log(rates);
+  console.log("Saving rates to Sanity...");
+  try {
+    const doc = {
+      _type: "exchangeRate",
+      created_at: new Date().toISOString(),
+      rates_json: JSON.stringify(rates)
+    };
 
-  const result = await client.create(doc);
-  console.log("Saved:", result);
+    const result = await client.create(doc);
+    console.log("Saved:", result);
+  }
+  catch(error) {
+    console.log(error);
+  }
 }
 
 const MapDataContext = createContext();

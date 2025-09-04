@@ -147,7 +147,7 @@ const Map = () => {
       "pitch": 0,
       "bearing": 0,
       "projection": process.env.NEXT_PUBLIC_MAPBOX_PROJECTION,
-      "style": "mapbox://styles/mapbox/standard",
+      "style": process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL,
       "config": {
         "basemap": {
           "lightPreset": 'night'
@@ -171,7 +171,9 @@ const Map = () => {
   
   useEffect(() => {
 
-    if( mapReady === false) { return; }    
+    if( mapReady === false) { return; } 
+    
+    if( ridesGeojson === null) { return; } 
 
     if( selectedCategories.length === 0 && selectedMonths.length === 0 && selectedRidingLevel === "") { 
       mapRef.current.getSource('rides-src').setData(ridesGeojson);          
@@ -181,7 +183,6 @@ const Map = () => {
     const source = mapRef.current.getSource('rides-src');
 
     // Filter
-
     const allFeatures = ridesGeojson.features;  
 
     const selCat = selectedCategories;
