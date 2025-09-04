@@ -61,7 +61,7 @@ export const getConvertedPrice = (exchangeRates, selectedCurrency, value) => {
     if (typeof rate !== 'number' || rate <= 0) {
       return "-";
     }
-    return parseInt(rate * value);
+    return parseInt(rate * value).toLocaleString("en-US");
   } catch (error) {
     console.warn('Currency conversion failed:', error);
     return "-";

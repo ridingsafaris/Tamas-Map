@@ -45,9 +45,9 @@ const Map = () => {
 
   let priceTextFieldExpression = [
     "case", 
-    ["==", ["get", "currency"], "USD"], ["concat", ["literal", currencySymbols.USD], selectedPriceType === "NIGHT" ? ["get", "price_per_night"] : ["get", "price"]],
-    ["==", ["get", "currency"], "EUR"], ["concat", ["literal", currencySymbols.EUR], selectedPriceType === "NIGHT" ? ["get", "price_per_night"] : ["get", "price"]],
-    ["==", ["get", "currency"], "GBP"], ["concat", ["literal", currencySymbols.GBP], selectedPriceType === "NIGHT" ? ["get", "price_per_night"] : ["get", "price"]],
+    ["==", ["get", "currency"], "USD"], ["concat", ["literal", currencySymbols.USD], selectedPriceType === "NIGHT" ? ["get", "price_per_night_formatted"] : ["get", "price_formatted"]],
+    ["==", ["get", "currency"], "EUR"], ["concat", ["literal", currencySymbols.EUR], selectedPriceType === "NIGHT" ? ["get", "price_per_night_formatted"] : ["get", "price_formatted"]],
+    ["==", ["get", "currency"], "GBP"], ["concat", ["literal", currencySymbols.GBP], selectedPriceType === "NIGHT" ? ["get", "price_per_night_formatted"] : ["get", "price_formatted"]],
     ''
   ] 
 
