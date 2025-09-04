@@ -8,7 +8,7 @@ import { useMapData } from "../../context/MapDataContext";
 import { useFilterData } from "../../context/FilterDataContext";
 
 // Utils
-import { currencySymbols } from "../../utils/utils";
+import { currencySymbols, getConvertedPrice } from "../../utils/utils";
 
 
 const PriceRangeSlider = ({interval, step, min, max, onChange}) => {
@@ -21,21 +21,7 @@ const PriceRangeSlider = ({interval, step, min, max, onChange}) => {
     if (onChange) {
       onChange(val);
     }
-  }
-
-  // Helpers
-  const getConvertedPrice = (value) => {
-    try {
-      const rate = exchangeRates?.[selectedCurrency]?.USD;
-      if (typeof rate !== 'number' || rate <= 0) {
-        return "-";
-      }
-      return parseInt(rate * value);
-    } catch (error) {
-      console.warn('Currency conversion failed:', error);
-      return "-";
-    }
-  };  
+  } 
 
   return (
     <div className="w-full max-w-md mx-auto py-4 px-2">
@@ -80,7 +66,7 @@ const PriceRangeSlider = ({interval, step, min, max, onChange}) => {
           <div className="drop-shadow mt-2 p-3 border border-gray-200 rounded-xl">
             <span>
               {currencySymbols[selectedCurrency] ?? ""}
-              {getConvertedPrice(interval[0])}
+              {getConvertedPrice(exchangeRates, selectedCurrency, interval[0])}
             </span>
           </div>
         </div>
@@ -89,7 +75,7 @@ const PriceRangeSlider = ({interval, step, min, max, onChange}) => {
           <div className="drop-shadow mt-2 p-3 border border-gray-200 rounded-xl">
             <span>
               {currencySymbols[selectedCurrency] ?? ""}
-              {getConvertedPrice(interval[1])}
+              {getConvertedPrice(exchangeRates, selectedCurrency, interval[1])}
             </span>
           </div>
         </div>

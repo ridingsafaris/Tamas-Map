@@ -1,3 +1,5 @@
+"use client";
+
 // Core
 import { useState, useEffect, useRef } from "react";
 
@@ -143,7 +145,6 @@ const SearchBox = () => {
 
       if (debouncedQuery.trim()) {
         const filtered = ridesRef.current.filter((item) => {
-          console.log(item);
           return item.name.toLowerCase().includes(debouncedQuery.toLowerCase())
         });
 

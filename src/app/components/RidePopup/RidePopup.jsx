@@ -4,16 +4,28 @@
 import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 
+// Context
+import { useFilterData } from '../../context/FilterDataContext';
+import { useMapData } from '../../context/MapDataContext';
+
 // Mapbox
 import mapboxgl from 'mapbox-gl'
 
 // Icons
 import { XCircleIcon } from "@heroicons/react/24/solid";
 
+// Utils
+
+import { currencySymbols, getConvertedPrice } from '../../utils/utils';
+
+
 const RidePopup = ({ map, activeFeature, onClose }) => {
 
   const popupRef = useRef();
   const contentRef = useRef(document.createElement("div"));
+
+  const { currencies, exchangeRates } = useMapData();
+  const { selectedCurrency } = useFilterData();
 
   // Local state
   const [imgLoading, setImgLoading] = useState(true);
@@ -106,17 +118,25 @@ const RidePopup = ({ map, activeFeature, onClose }) => {
               onError={() => setImgLoading(false)}
             />          
           </div>
-          <div className="bg-[#FFF] w-full max-h-[190px] rounded-b-3xl p-4">
+          <div className="bg-[#FFF] w-full max-h-[210px] rounded-b-3xl p-4">
             <h3 className="text-[#000] font-semibold text-lg">{properties.name}</h3>
             <p className="w-full text-[#888] mt-1">{safeJsonParse(properties.category).join(", ")}</p>
             <p className="w-full text-[#888]">{safeJsonParse(properties.riding_level).join(" | ")}</p>
             <p className="w-full text-[#000] mt-2">
               {properties.description && properties.description.length >= 150 ? properties.description.substring(0, 150) + "..." : properties.description}
             </p>
+            <p className="w-full text-[#000] mt-2 text-xs font-semibold">
+              { properties.duration > 1 ? 
+                `From ${currencySymbols[selectedCurrency]}${getConvertedPrice(exchangeRates, selectedCurrency, properties.price)} for ${properties.duration} nights` : 
+                `Day rides from ${currencySymbols[selectedCurrency]}${getConvertedPrice(exchangeRates, selectedCurrency, properties.price)}`}</p>
           </div>
-          <a href={properties.isBlackSaddle ? properties.black_saddle_url : properties.url} target="_blank" className="z-20 absolute top-0 left-0 w-full h-full"></a>
-          <div className="z-30 absolute h-14 top-[-5] right-1">
-            <button className={`z-30 h-full right-0 p-1 text-white cursor-pointer`} onClick={closeIconClickedHandler} aria-label="Close popup">
+          <a 
+            href={properties.isBlackSaddle ? properties.black_saddle_url : properties.url} 
+            target="_blank" 
+            className="z-50 absolute top-0 left-0 w-full h-full"
+          ></a>
+          <div className="z-40 absolute h-14 top-[-5] right-1">
+            <button className={`z-40 h-full right-0 p-1 text-white cursor-pointer`} onClick={closeIconClickedHandler} aria-label="Close popup">
               <XCircleIcon className="h-8 w-8" />
             </button>            
           </div>          

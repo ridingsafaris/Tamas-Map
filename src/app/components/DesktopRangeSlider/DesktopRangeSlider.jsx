@@ -12,7 +12,7 @@ import { useMapData } from "../../context/MapDataContext";
 
 
 // Utils
-import { currencySymbols } from "../../utils/utils";
+import { currencySymbols, getConvertedPrice } from "../../utils/utils";
 
 const DesktopRangeSlider = ({interval, step, min, max, onChange}) => {
     
@@ -24,21 +24,7 @@ const DesktopRangeSlider = ({interval, step, min, max, onChange}) => {
     if (onChange) {
       onChange(val);
     }
-  }
-
-  // Helpers
-  const getConvertedPrice = (value) => {
-    try {
-      const rate = exchangeRates?.[selectedCurrency]?.USD;
-      if (typeof rate !== 'number' || rate <= 0) {
-        return "-";
-      }
-      return parseInt(rate * value);
-    } catch (error) {
-      console.warn('Currency conversion failed:', error);
-      return "-";
-    }
-  };   
+  }   
 
   return (
     <div className="w-full px-0 py-4 pl-4 pr-8 ">
@@ -46,7 +32,7 @@ const DesktopRangeSlider = ({interval, step, min, max, onChange}) => {
 
         {/* Min value box */}
         <span className="w-6 text-[#FFF] tracking-wider font-circular text-sm">
-          {currencySymbols[selectedCurrency]}{getConvertedPrice(interval[0])}
+          {currencySymbols[selectedCurrency]}{getConvertedPrice(exchangeRates, selectedCurrency, interval[0])}
         </span>
 
         {/* Slider */}
@@ -95,7 +81,7 @@ const DesktopRangeSlider = ({interval, step, min, max, onChange}) => {
 
         {/* Max value box */}
         <span className="w-6 text-[#FFF] tracking-wider font-circular text-sm">
-          {currencySymbols[selectedCurrency]}{getConvertedPrice(interval[1])}
+          {currencySymbols[selectedCurrency]}{getConvertedPrice(exchangeRates, selectedCurrency, interval[1])}
         </span>    
 
       </div>

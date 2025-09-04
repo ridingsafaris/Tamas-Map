@@ -1,5 +1,9 @@
 "use client";
+
+// Core 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+
+// Utils
 import { 
   normalizePricesToUSD,
   getNormalizedMinMaxNightPrice,
@@ -8,6 +12,8 @@ import {
   rebaseRates,
   invertRates
 } from '../utils/utils';
+
+// Sanity Client
 import { createClient } from '@sanity/client';
 
 const client = createClient({
@@ -26,6 +32,7 @@ const RIDES_QUERY = `
   _id,
   "title": coalesce(title, name),
   "operator": coalesce(operator, operatorName, operator->name),
+  itinerary,
   address,
   description,
   category,
@@ -250,7 +257,7 @@ export const MapDataProvider = ({ children }) => {
         "months": ride.months,
         "category": ride.black_saddle ? [...ride.category, "Black Saddle"] : ride.category,
         "price": ride.price,
-        "name": ride.operator,
+        "name": ride.itinerary,
         "title": ride.title,
         "address": ride.address,
         "description": ride.description,
@@ -276,7 +283,6 @@ export const MapDataProvider = ({ children }) => {
 
   //  Determine the categories from the rides and save them to context
   const extractDistinctCategories = (rides) => {
-    console.log(rides);
     let categories = [];
     rides.forEach((ride) => {
       ride.category.forEach((category) => {
@@ -299,12 +305,6 @@ export const MapDataProvider = ({ children }) => {
       ridesData = ridesData.filter((ride) => {
         return ride.black_saddle !== null && ride.black_saddle !== undefined && ride.category !== null && ride.category !== undefined;
       });
-
-      ridesData = ridesData.map(ride => {
-        return {...ride, ...{operator: "Operator name here"}}
-      });
-
-      console.log(ridesData);
 
       // Extract all distinct categories from the rides
       const categories = extractDistinctCategories(ridesData);
