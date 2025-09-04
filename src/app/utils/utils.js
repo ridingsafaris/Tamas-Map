@@ -55,6 +55,19 @@ export const currencySymbols = {
   "USD": "$"
 };
 
+export const getConvertedPrice = (exchangeRates, selectedCurrency, value) => {
+  try {
+    const rate = exchangeRates?.[selectedCurrency]?.USD;
+    if (typeof rate !== 'number' || rate <= 0) {
+      return "-";
+    }
+    return parseInt(rate * value);
+  } catch (error) {
+    console.warn('Currency conversion failed:', error);
+    return "-";
+  }
+}
+
 export const normalizePricesToUSD = (featureCollection, exchangeRates = backupRates) => {
   return {
     ...featureCollection,
