@@ -66,6 +66,7 @@ export const normalizePricesToUSD = (featureCollection, exchangeRates = backupRa
       const numericPriceNight = parseFloat(String(price_per_night).replace(/[^0-9.]/g, "")) || 0;
   
       // Find conversion rate (default to 1 if missing)
+
       const rate = exchangeRates.USD[currency] ?? 1;
   
       return {

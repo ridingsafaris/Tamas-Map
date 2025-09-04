@@ -70,7 +70,8 @@ const getRatesDataFromAPI = async () => {
 }
 
 const getRatesFromSanity = async () => {
-  const data = await client.fetch(`*[_type == "rates"]{created_at, rates_json}`);
+  const data = await client.fetch(`*[_type == "exchangeRate"]{created_at, rates_json}`);
+
   if(data.length > 0) {
     // This tells if the difference in dates is smaller than one day or not
     // If it is smaller then there is no need to do an update of the exchange rates
@@ -78,7 +79,7 @@ const getRatesFromSanity = async () => {
 
     if(ratesRequiresUpdate) {
 
-      console.log("Requires update...");
+      //console.log("Requires update...");
 
       let ratesData = await getRatesDataFromAPI();
 
@@ -102,13 +103,14 @@ const getRatesFromSanity = async () => {
     }
     else
     {
-      console.log("Doesn't require update...");
-      return data[0].rates_json;
+      //console.log("Doesn't require update...");
+      
+      return JSON.parse(data[0].rates_json);
     }
   }
   else
   {
-    console.log("Running for the first time, requires update...")
+    //console.log("Running for the first time, requires update...")
     let ratesData = await getRatesDataFromAPI();
 
       // Invert the currency data received from the API so that so that the value of each currency attribute in the parent would show
