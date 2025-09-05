@@ -118,7 +118,7 @@ const RidePopup = ({ map, activeFeature, onClose }) => {
               onError={() => setImgLoading(false)}
             />          
           </div>
-          <div className="bg-[#FFF] w-full max-h-[210px] rounded-b-3xl p-4">
+          <div className="bg-[#FFF] w-full max-h-[410px] rounded-b-3xl p-4">
             <h3 className="text-[#000] font-semibold text-lg">{properties.name}</h3>
             <p className="w-full text-[#888] mt-1">{safeJsonParse(properties.category).join(", ")}</p>
             <p className="w-full text-[#888]">{safeJsonParse(properties.riding_level).join(" | ")}</p>
@@ -135,8 +135,8 @@ const RidePopup = ({ map, activeFeature, onClose }) => {
             target="_blank" 
             className="z-50 absolute top-0 left-0 w-full h-full"
           ></a>
-          <div className="z-40 absolute h-14 top-[-5] right-1">
-            <button className={`z-40 h-full right-0 p-1 text-white cursor-pointer`} onClick={closeIconClickedHandler} aria-label="Close popup">
+          <div className="z-50 absolute h-14 top-[-5] right-1">
+            <button className={`z-50 h-full right-0 p-1 text-white cursor-pointer`} onClick={closeIconClickedHandler} aria-label="Close popup">
               <XCircleIcon className="h-8 w-8" />
             </button>            
           </div>          
